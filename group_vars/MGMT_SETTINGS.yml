@@ -1,0 +1,12 @@
+---
+# Management settings
+cvp_instance_ip: 10.20.20.20
+cvp_ingestauth_key: dudeface
+mgmt_gateway: 10.30.30.1
+name_servers:
+  - 10.20.20.13
+  - 8.8.8.8
+
+management_security:
+  password:
+    encryption_key_common: true

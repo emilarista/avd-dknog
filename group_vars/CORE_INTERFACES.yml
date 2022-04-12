@@ -1,0 +1,70 @@
+---
+# Core interfaces definition
+core_interfaces:
+  p2p_links_ip_pools:
+    - name: underlay_pool
+      ipv4_pool: 100.64.48.0/24
+  p2p_links_profiles:
+    - name: default_bb_profile
+      mtu: 1500
+      isis_hello_padding: false
+      isis_metric: 50
+      ip_pool: underlay_pool
+      isis_circuit_type: level-2
+      isis_authentication_mode: md5
+      isis_authentication_key: $1c$sTNAlR6rKSw=
+  p2p_links:
+    # P1
+    - nodes: [ P1, P2 ]
+      id: 1
+      interfaces: [ Ethernet1, Ethernet1 ]
+      profile: default_bb_profile
+
+    - nodes: [ P1, PE-1A ]
+      id: 2
+      interfaces: [ Ethernet2, Ethernet2 ]
+      profile: default_bb_profile
+
+    - nodes: [ P1, P3 ]
+      id: 3
+      interfaces: [ Ethernet3, Ethernet3 ]
+      profile: default_bb_profile
+
+    # P2
+    - nodes: [ PE-1B, P2 ]
+      id: 4
+      interfaces: [ Ethernet2, Ethernet2 ]
+      profile: default_bb_profile
+
+    - nodes: [ P2, P4 ]
+      id: 5
+      interfaces: [ Ethernet3, Ethernet3 ]
+      profile: default_bb_profile
+
+    # P3
+    - nodes: [ P3, P4 ]
+      id: 6
+      interfaces: [ Ethernet1, Ethernet1 ]
+      profile: default_bb_profile
+
+    - nodes: [ P3, PE-2A ]
+      id: 7
+      interfaces: [ Ethernet2, Ethernet2 ]
+      profile: default_bb_profile
+
+    # P4
+    - nodes: [ P4, PE-2B ]
+      id: 8
+      interfaces: [ Ethernet2, Ethernet2 ]
+      profile: default_bb_profile
+
+    # RR Links
+    - nodes: [ P1, RR ]
+      id: 9
+      interfaces: [ Ethernet4, Ethernet4 ]
+      profile: default_bb_profile
+
+    - nodes: [ P3, RR ]
+      id: 10
+      interfaces: [ Ethernet5, Ethernet5 ]
+      profile: default_bb_profile

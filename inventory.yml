@@ -1,0 +1,72 @@
+---
+all:
+  children:
+    CVP:
+      hosts:
+        cv_server:
+          ansible_httpapi_host: 10.20.20.20
+          ansible_host: 10.20.20.20
+          ansible_user: cvpadmin
+          ansible_password: arista1234
+          ansible_connection: httpapi
+          ansible_httpapi_use_ssl: true
+          ansible_httpapi_validate_certs: false
+          ansible_network_os: eos
+          ansible_httpapi_port: 443
+          # Configuration to get Virtual Env information
+          ansible_python_interpreter: $(which python3)
+    # DC fabric - EVPN Fabric running in home lab
+
+    MPLS_CORE:
+      children:
+        PE_ROUTERS:
+          vars:
+            type: pe
+          children:
+            PE_SITE1:
+              hosts:
+                PE-1A:
+                  ansible_host: 10.30.30.101
+                PE-1B:
+                  ansible_host: 10.30.30.102
+            PE_SITE2:
+              hosts:
+                PE-2A:
+                  ansible_host: 10.30.30.108
+                PE-2B:
+                  ansible_host: 10.30.30.109
+        P_ROUTERS:
+          vars:
+            type: p
+          hosts:
+            P1:
+              ansible_host: 10.30.30.103
+            P2:
+              ansible_host: 10.30.30.104
+            P3:
+              ansible_host: 10.30.30.106
+            P4:
+              ansible_host: 10.30.30.107
+        RR_ROUTERS:
+          vars:
+            type: rr
+          hosts:
+            RR:
+              ansible_host: 10.30.30.105
+
+    MPLS_TENANTS:
+      children:
+        PE:
+    MPLS_ENDPOINT_CONNECTIONS:
+      children:
+        PE:
+
+    LOCAL_USERS:
+      children:
+        MPLS_CORE:
+    CORE_INTERFACES:
+      children:
+        MPLS_CORE:
+    MGMT_SETTINGS:
+      children:
+        MPLS_CORE:

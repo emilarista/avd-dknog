@@ -1,0 +1,114 @@
+---
+design:
+  type: "mpls"
+
+# Fabric name, needs to match inventory group
+fabric_name: MPLS_CORE
+
+# ISIS
+# underlay_routing_protocol: isis-sr <== DEFAULT
+isis_ti_lfa:
+  enabled: true
+  protection: link
+  local_convergence_delay: 15000
+
+# BGP
+# overlay_routing_protocol: ibgp  <== DEFAULT
+bgp_as: 64512
+bgp_peer_groups:
+  mpls_overlay_peers:
+    password: $1c$U4tL2vQP9QwZlxIV1K3/pw==
+
+# Adjust default bfd values if desired.
+bfd_multihop:
+  interval: 5000
+  min_rx: 5000
+  multiplier: 3
+
+# P Routers
+p:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 100.70.0.0/24
+    loopback_ipv4_offset: 30
+    node_sid_base: 300
+    isis_system_id_prefix: '0000.0003'
+  nodes:
+    P1:
+      id: 1
+      mgmt_ip: 10.30.30.103/24
+    P2:
+      id: 2
+      mgmt_ip: 10.30.30.104/24
+    P3:
+      id: 3
+      mgmt_ip: 10.30.30.106/24
+    P4:
+      id: 4
+      mgmt_ip: 10.30.30.107/24
+
+# PE Routers
+pe:
+  defaults:
+    platform: vEOS-LAB
+    virtual_router_mac_address: 00:1c:73:00:dc:00
+    loopback_ipv4_pool: 100.70.0.0/24
+    node_sid_base: 100
+    isis_system_id_prefix: '0000.0001'
+    loopback_ipv4_offset: 10
+    spanning_tree_priority: 4096
+    spanning_tree_mode: mstp
+    overlay_address_families: [ evpn ]
+    spanning_tree_root_super: true
+    bgp_defaults:
+      - 'no bgp default ipv4-unicast'
+      - 'distance bgp 20 200 200'
+      - 'graceful-restart restart-time 300'
+      - 'graceful-restart'
+    mpls_route_reflectors: [ RR ]
+  node_groups:
+    PE-1:
+      filter:
+        tenants: [ all ]
+        tags: [ site1 ]
+      nodes:
+        PE-1A:
+          id: 1
+          mgmt_ip: 10.30.30.101/24
+        PE-1B:
+          id: 2
+          mgmt_ip: 10.30.30.102/24
+    PE-2:
+      filter:
+        tenants: [ all ]
+        tags: [ site2 ]
+      nodes:
+        PE-2A:
+          id: 3
+          mgmt_ip: 10.30.30.108/24
+        PE-2B:
+          id: 4
+          mgmt_ip: 10.30.30.109/24
+
+rr:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 100.70.0.0/24
+    loopback_ipv4_offset: 20
+    node_sid_base: 200
+    isis_system_id_prefix: '0000.0002'
+    overlay_address_families: [ evpn ]
+    bgp_defaults:
+      - 'no bgp default ipv4-unicast'
+      - 'distance bgp 20 200 200'
+      - 'graceful-restart restart-time 300'
+      - 'graceful-restart'
+      - 'bgp route-reflector preserve-attributes always'
+  node_groups:
+    # 2 nodes in a node group form a RR cluster
+    RR:
+      bgp_cluster_id: 5.5.5.5
+      nodes:
+        RR:
+          id: 1
+          mgmt_ip: 10.30.30.105/24
