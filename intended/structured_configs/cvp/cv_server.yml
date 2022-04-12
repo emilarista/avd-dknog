@@ -1,0 +1,51 @@
+---
+CVP_DEVICES:
+  - fqdn: P1
+    parentContainerName: P_ROUTERS
+    configlets:
+      - DKNOG-AVD_P1
+  - fqdn: P2
+    parentContainerName: P_ROUTERS
+    configlets:
+      - DKNOG-AVD_P2
+  - fqdn: P3
+    parentContainerName: P_ROUTERS
+    configlets:
+      - DKNOG-AVD_P3
+  - fqdn: P4
+    parentContainerName: P_ROUTERS
+    configlets:
+      - DKNOG-AVD_P4
+  - fqdn: PE-1A
+    parentContainerName: PE_SITE1
+    configlets:
+      - DKNOG-AVD_PE-1A
+  - fqdn: PE-1B
+    parentContainerName: PE_SITE1
+    configlets:
+      - DKNOG-AVD_PE-1B
+  - fqdn: PE-2A
+    parentContainerName: PE_SITE2
+    configlets:
+      - DKNOG-AVD_PE-2A
+  - fqdn: PE-2B
+    parentContainerName: PE_SITE2
+    configlets:
+      - DKNOG-AVD_PE-2B
+  - fqdn: RR
+    parentContainerName: RR_ROUTERS
+    configlets:
+      - DKNOG-AVD_RR
+CVP_CONTAINERS:
+  MPLS_CORE:
+    parentContainerName: Tenant
+  P_ROUTERS:
+    parentContainerName: MPLS_CORE
+  PE_ROUTERS:
+    parentContainerName: MPLS_CORE
+  PE_SITE1:
+    parentContainerName: PE_ROUTERS
+  PE_SITE2:
+    parentContainerName: PE_ROUTERS
+  RR_ROUTERS:
+    parentContainerName: MPLS_CORE

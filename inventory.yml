@@ -56,10 +56,10 @@ all:
 
     MPLS_TENANTS:
       children:
-        PE:
+        PE_ROUTERS:
     MPLS_ENDPOINT_CONNECTIONS:
       children:
-        PE:
+        PE_ROUTERS:
 
     LOCAL_USERS:
       children:
