@@ -27,10 +27,9 @@
 #       port_channel:
 #         description: EVPN-A-A-PortChannel
 #         mode: active
-#         # ESI stuff for main port channel, subinterfaces below use own values.
 #         short_esi: 0000:1111:3333
 
-#   A_CPE1_SITE2_PO2:
+#   A_CPE2_SITE2_PO2:
 #     adapters:
 #     - endpoint_ports:
 #       - Ethernet3
@@ -45,5 +44,4 @@
 #       port_channel:
 #         description: EVPN-A-A-PortChannel
 #         mode: active
-#         # ESI stuff for main port channel, subinterfaces below use own values.
 #         short_esi: 0000:2222:3333

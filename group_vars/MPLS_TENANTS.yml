@@ -62,7 +62,6 @@ overlay_rt_type:
 #           1002:
 #             enabled: true
 #             name: TENANT_A_SITE2_IRB
-#             # ip_virtual_router_addresses: [10.1.20.1]
 #             nodes:
 #               PE-2A:
 #                 ip_address: 10.1.20.2/27
