@@ -6,8 +6,8 @@ all:
         cv_server:
           ansible_httpapi_host: 10.20.20.20
           ansible_host: 10.20.20.20
-          ansible_user: cvpadmin
-          ansible_password: arista1234
+          ansible_user: cvaas
+          ansible_password: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJkaWQiOjcwNDIzMzU1Mjg4MTI4MDYzODEsImRzbiI6ImFuc2libGUiLCJkc3QiOiJhY2NvdW50IiwiZXhwIjoxNjgyMjM2NTUwLCJpYXQiOjE2NTA4NzMzNzQsInNpZCI6IjExMGZjOTM4ODc0YzM4YzAyZDE3YTNiOTMyOTAxZGY0NjA4OTYwYjAyNTU5NTU4Mjc2M2I4MjVhOWQ5MjQxM2Ita0tiNExYQzZzdjFZQl9TR2E2ZDZMSmxmOUx2c1pGSjhETU9uR21kQiJ9.qvWW6UiBJ4LV6LdU4Vbcvaug4EoHj9gr5_V8z9OTly2sdZwCB9LUca4axnxkD9KWi02fChQLzO53rzE5NX8nGgG86Y46VaGgLUpKVAdYphfMCk5vaxf0fEsqO1E6yK9bTiFrjmWx3tuCiL-xtvV8z36msW2y53fTAg4Y295p3SYFu89LJj0GKJC_vYkpCPtrn49_9AYjh4yoybIeA9EmucmBQcBIZJ3iH_Afiyir16TptY_KldCwRDuYvrgT2qRVU052ef6lg3CKqtwemPhyT6qQMKuqq9ajxSIiabL4_WSI84LxFqlZockAUpjJCvof-rrrHIxf2dlkSrIER6QJLgex0waN1on2_OwGdsvsOt8AKYGVTvcTLz7DkjK3r7pgNY5Fu-GQ5bV6pLcGy4nupEUnv7Te2ecywQer3bPPEkcnyopPGoJqjVse7-MmH59Q2WoCv8yFLUiOdEify7SfXMx8hzgyKauqQCEnYLDe-uC6u0m6PFwmGDSEHA5tnlHRjjdNRT7m9JzV10LSKMvD1Kx5M0GnX1UAfqnhzhiPvTMPlFcwwshsqohibFVTKR9y1JS59SAVFVcob8Z7RiQU9sQDXChF5nLXBL1o-6gK7XvbWt3qALBuMtuc9_2_ah04UJwr9ZNdCT-e-Jug_kiZflSYWmaWvEwxz2M1Je_XUV4"
           ansible_connection: httpapi
           ansible_httpapi_use_ssl: true
           ansible_httpapi_validate_certs: false
