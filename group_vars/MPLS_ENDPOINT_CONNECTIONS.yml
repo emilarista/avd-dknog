@@ -1,47 +1,47 @@
 ---
-# port_profiles:
-#   TENANT_A_SITE1_SERVICES:
-#     mode: trunk
-#     vlans: 10,1001
-#     spanning_tree_portfast: edge
+port_profiles:
+  TENANT_A_SITE1_SERVICES:
+    mode: trunk
+    vlans: 10,1001
+    spanning_tree_portfast: edge
 
-#   TENANT_A_SITE2_SERVICES:
-#     mode: trunk
-#     vlans: 10,1002
-#     spanning_tree_portfast: edge
+  TENANT_A_SITE2_SERVICES:
+    mode: trunk
+    vlans: 10,1002
+    spanning_tree_portfast: edge
 
-# cpes:
+cpes:
 
-#   A_CPE1_SITE1_PO2:
-#     adapters:
-#     - endpoint_ports:
-#       - Ethernet3
-#       - Ethernet4
-#       switch_ports:
-#       - Ethernet3
-#       - Ethernet3
-#       switches:
-#       - PE-1A
-#       - PE-1B
-#       profile: TENANT_A_SITE1_SERVICES
-#       port_channel:
-#         description: EVPN-A-A-PortChannel
-#         mode: active
-#         short_esi: 0000:1111:3333
+  A_CPE1_SITE1_PO2:
+    adapters:
+    - endpoint_ports:
+      - Ethernet3
+      - Ethernet4
+      switch_ports:
+      - Ethernet3
+      - Ethernet3
+      switches:
+      - PE-1A
+      - PE-1B
+      profile: TENANT_A_SITE1_SERVICES
+      port_channel:
+        description: EVPN-A-A-PortChannel
+        mode: active
+        short_esi: 0000:1111:3333
 
-#   A_CPE2_SITE2_PO2:
-#     adapters:
-#     - endpoint_ports:
-#       - Ethernet3
-#       - Ethernet4
-#       switch_ports:
-#       - Ethernet3
-#       - Ethernet3
-#       switches:
-#       - PE-2A
-#       - PE-2B
-#       profile: TENANT_A_SITE2_SERVICES
-#       port_channel:
-#         description: EVPN-A-A-PortChannel
-#         mode: active
-#         short_esi: 0000:2222:3333
+  A_CPE2_SITE2_PO2:
+    adapters:
+    - endpoint_ports:
+      - Ethernet3
+      - Ethernet4
+      switch_ports:
+      - Ethernet3
+      - Ethernet3
+      switches:
+      - PE-2A
+      - PE-2B
+      profile: TENANT_A_SITE2_SERVICES
+      port_channel:
+        description: EVPN-A-A-PortChannel
+        mode: active
+        short_esi: 0000:2222:3333

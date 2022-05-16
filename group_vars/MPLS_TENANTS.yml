@@ -5,79 +5,97 @@ overlay_rd_type:
 overlay_rt_type:
   admin_subfield: 64512
 
-# tenants:
-#   TENANT_A:
-#     mac_vrf_id_base: 10000
-#     pseudowire_rt_base: 1000
-#     # VPWS Pseudowire - dualhomed on both sides, with subinterface
-#     point_to_point_services:
-#       - name: TEN_A_site3_site5_eline_vlan_based
-#         type: vpws-pseudowire
-#         endpoints:
-#           - id: 11000
-#             nodes: ["PE-1A", "PE-1B"]
-#             interfaces: ["Ethernet1", "Ethernet1"]
-#             port_channel:
-#               mode: active
-#               short_esi: 0000:1111:1111
-#           - id: 21000
-#             port_channel:
-#               mode: active
-#               short_esi: 0000:2222:1111
-#             nodes: ["PE-2A", "PE-2B"]
-#             interfaces: ["Ethernet1", "Ethernet1"]
-#         lldp_disable: true
+tenants:
+  TENANT_A:
+    mac_vrf_id_base: 10000
+    pseudowire_rt_base: 1000
+    # VPWS Pseudowire - dualhomed on both sides, with subinterface
+    point_to_point_services:
+      - name: TEN_A_site3_site5_eline_vlan_based_blssss
+        type: vpws-pseudowire
+        endpoints:
+          - id: 11000
+            nodes: ["PE-1A", "PE-1B"]
+            interfaces: ["Ethernet1", "Ethernet1"]
+            port_channel:
+              mode: active
+              short_esi: 0000:1111:1111
+          - id: 21000
+            nodes: ["PE-2A", "PE-2B"]
+            interfaces: ["Ethernet1", "Ethernet1"]
+            port_channel:
+              mode: active
+              short_esi: 0000:2222:1111
 
-#     # P2MP L2 VLAN Service
-#     l2vlans:
-#       10:
-#         name: TENANT_A_L2_P2MP_SERVICE
-#         tags:
-#           - site1
-#           - site2
+    # P2MP L2 VLAN Service
+    l2vlans:
+      10:
+        name: TENANT_A_L2_P2MP_SERVICE
+        tags:
+          - site1
+          - site2
 
-#     # L3VPN Service
-#     vrfs:
-#       TENANT_A_L3VPN:
-#         vrf_id: 1
-#         address_families:
-#           - evpn
-#         ospf:
-#           enabled: true
-#           nodes:
-#             - PE-2A
-#             - PE-2B
-#         svis:
-#           1001:
-#             enabled: true
-#             name: TENANT_A_SITE1_IRB
-#             ip_virtual_router_addresses: [10.1.10.1]
-#             nodes:
-#               PE-1A:
-#                 ip_address: 10.1.10.2/27
-#               PE-1B:
-#                 ip_address: 10.1.10.3/27
-#             tags:
-#               - site1
-#           1002:
-#             enabled: true
-#             name: TENANT_A_SITE2_IRB
-#             nodes:
-#               PE-2A:
-#                 ip_address: 10.1.20.2/27
-#               PE-2B:
-#                 ip_address: 10.1.20.3/27
-#             tags:
-#               - site2
-#             ospf:
-#               enabled: true
+    # L3VPN Service
+    vrfs:
+      TENANT_A_L3VPN:
+        vrf_id: 1
+        address_families:
+          - evpn
+        ospf:
+          enabled: true
+          nodes:
+            - PE-2A
+            - PE-2B
+        svis:
+          1001:
+            enabled: true
+            name: TENANT_A_SITE1_IRB
+            ip_virtual_router_addresses: [10.1.10.1]
+            nodes:
+              PE-1A:
+                ip_address: 10.1.10.2/27
+              PE-1B:
+                ip_address: 10.1.10.3/27
+            tags:
+              - site1
+          1002:
+            enabled: true
+            name: TENANT_A_SITE2_IRB
+            nodes:
+              PE-2A:
+                ip_address: 10.1.20.2/27
+              PE-2B:
+                ip_address: 10.1.20.3/27
+            tags:
+              - site2
+            ospf:
+              enabled: true
+        bgp_peers:
+          10.1.10.4:
+            description: TENANT_A_CPE_SITE1
+            nodes:
+            - PE-1A
+            - PE-1B
+            password: $1c$U4tL2vQP9QwZlxIV1K3/pw==
+            remote_as: "12345"
+            set_ipv4_next_hop: 10.1.10.1
 
-#         bgp_peers:
-#           10.1.10.4:
-#             description: TENANT_A_CPE_SITE1
-#             nodes:
-#             - PE-1A
-#             - PE-1B
-#             password: $1c$U4tL2vQP9QwZlxIV1K3/pw==
-#             remote_as: "12345"
-#             set_ipv4_next_hop: 10.1.10.1
+      TENANT_A_IPVPN:
+        vrf_id: 2
+        address_families:
+          - vpn-ipv4
+        l3_interfaces:
+          - interfaces: [ Ethernet4, Ethernet4 ]
+            ip_addresses: [ 30.30.30.1/31, 30.30.30.3/31 ]
+            nodes: [ PE-1A, PE-1B ]
+            description: ROUTED_PORTS_CPE1
+            enabled: true
+            mtu: 1500
+          - interfaces: [ Ethernet4, Ethernet4 ]
+            ip_addresses: [ 30.30.30.5/31, 30.30.30.7/31 ]
+            nodes: [ PE-2A, PE-2B ]
+            description: ROUTED_PORTS_CPE2
+            enabled: true
+            mtu: 1500
+
+

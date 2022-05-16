@@ -27,10 +27,68 @@ router_bgp:
     peer_groups:
       MPLS-OVERLAY-PEERS:
         activate: true
+  address_family_vpn_ipv4:
+    neighbor_default_encapsulation_mpls_next_hop_self:
+      source_interface: Loopback0
+    peer_groups:
+      MPLS-OVERLAY-PEERS:
+        activate: true
   neighbors:
     100.70.0.21:
       peer_group: MPLS-OVERLAY-PEERS
       description: RR
+  vrfs:
+    TENANT_A_IPVPN:
+      router_id: 100.70.0.13
+      rd: 100.70.0.13:2
+      route_targets:
+        import:
+          vpn-ipv4:
+          - '64512:2'
+        export:
+          vpn-ipv4:
+          - '64512:2'
+      redistribute_routes:
+      - connected
+    TENANT_A_L3VPN:
+      router_id: 100.70.0.13
+      rd: 100.70.0.13:1
+      route_targets:
+        import:
+          evpn:
+          - '64512:1'
+        export:
+          evpn:
+          - '64512:1'
+      redistribute_routes:
+      - connected
+      - ospf
+  vlans:
+    1002:
+      tenant: TENANT_A
+      rd: 100.70.0.13:11002
+      route_targets:
+        both:
+        - 64512:11002
+      redistribute_routes:
+      - learned
+    10:
+      tenant: TENANT_A
+      rd: 100.70.0.13:10010
+      route_targets:
+        both:
+        - 64512:10010
+      redistribute_routes:
+      - learned
+  vpws:
+  - name: TENANT_A
+    rd: 100.70.0.13:1000
+    route_targets:
+      import_export: 64512:1000
+    pseudowires:
+    - name: TEN_A_site3_site5_eline_vlan_based_blssss
+      id_local: 21000
+      id_remote: 11000
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -76,6 +134,12 @@ local_users:
 vrfs:
   MGMT:
     ip_routing: false
+  TENANT_A_IPVPN:
+    tenant: TENANT_A
+    ip_routing: true
+  TENANT_A_L3VPN:
+    tenant: TENANT_A
+    ip_routing: true
 management_interfaces:
   Management1:
     description: oob_management
@@ -140,12 +204,95 @@ ethernet_interfaces:
     isis_authentication_key: $1c$sTNAlR6rKSw=
     mpls:
       ip: true
+  Ethernet3:
+    peer: A_CPE2_SITE2_PO2
+    peer_interface: Ethernet3
+    peer_type: cpe
+    description: A_CPE2_SITE2_PO2_Ethernet3
+    type: switched
+    shutdown: false
+    mode: trunk
+    vlans: 10,1002
+    spanning_tree_portfast: edge
+    channel_group:
+      id: 3
+      mode: active
+  Ethernet4:
+    type: routed
+    peer_type: l3_interface
+    vrf: TENANT_A_IPVPN
+    ip_address: 30.30.30.5/31
+    mtu: 1500
+    shutdown: false
+    description: ROUTED_PORTS_CPE2
+  Ethernet1:
+    shutdown: false
+    channel_group:
+      id: 1
+      mode: active
+port_channel_interfaces:
+  Port-Channel3:
+    description: A_CPE2_SITE2_PO2_EVPN-A-A-PortChannel
+    type: switched
+    shutdown: false
+    mode: trunk
+    vlans: 10,1002
+    spanning_tree_portfast: edge
+    esi: 0000:0000:0000:2222:3333
+    rt: 00:00:22:22:33:33
+    lacp_id: 0000.2222.3333
+  Port-Channel1:
+    type: routed
+    peer_type: l3_interface
+    shutdown: false
+    esi: 0000:0000:0000:2222:1111
+    rt: 00:00:22:22:11:11
+    lacp_id: 0000.2222.1111
 router_bfd:
   multihop:
     interval: 5000
     min_rx: 5000
     multiplier: 3
-patch_panel: {}
+patch_panel:
+  patches:
+  - name: TEN_A_site3_site5_eline_vlan_based_blssss
+    enabled: true
+    connectors:
+    - id: 1
+      type: interface
+      endpoint: Port-Channel1
+    - id: 2
+      type: pseudowire
+      endpoint: bgp vpws TENANT_A pseudowire TEN_A_site3_site5_eline_vlan_based_blssss
+vlans:
+  1002:
+    tenant: TENANT_A
+    name: TENANT_A_SITE2_IRB
+  10:
+    tenant: TENANT_A
+    name: TENANT_A_L2_P2MP_SERVICE
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:00
+vlan_interfaces:
+  Vlan1002:
+    tenant: TENANT_A
+    tags:
+    - site2
+    description: TENANT_A_SITE2_IRB
+    shutdown: false
+    vrf: TENANT_A_L3VPN
+    ip_address: 10.1.20.2/27
+    ospf_area: 0
+    ospf_network_point_to_point: false
+router_ospf:
+  process_ids:
+    1:
+      vrf: TENANT_A_L3VPN
+      passive_interface_default: true
+      router_id: 100.70.0.13
+      no_passive_interfaces:
+      - Vlan1002
+      redistribute:
+        bgp:
+          enabled: true

@@ -10,3 +10,7 @@ name_servers:
 management_security:
   password:
     encryption_key_common: true
+
+aliases: |
+  alias meminfo bash cat /proc/meminfo
+  alias cpuinfo bash cat /proc/cpuinfo

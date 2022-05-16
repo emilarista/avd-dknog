@@ -1,0 +1,44 @@
+---
+# Stuff for eos_snapshot
+ansible_user: emil
+ansible_password: Manowar66
+ansible_network_os: eos
+ansible_become: yes
+ansible_become_method: enable
+validation_mode_loose: true
+ansible_httpapi_use_ssl: true
+ansible_httpapi_validate_certs: false
+
+root_dir: '{{ inventory_dir }}'
+snapshots_backup_dir_name: 'commands'
+snapshots_backup_dir: '{{ root_dir }}/{{ snapshots_backup_dir_name }}'
+
+# list of desired formats. Supported values are markdown, json and text.
+# text: one file per device and show command
+# markdown: one report per device
+# json: one report per fabric
+# yaml: one report per fabric
+output_format:
+ - text
+ - markdown
+#  - json
+#  - yaml
+
+commands_list:
+  - "enable"
+  - "show system environment all"
+  - "bash cat /proc/cpuinfo"
+  - "bash cat /proc/meminfo"
+  - "show inventory"
+  - "show version"
+  - "show boot-config"
+  - "show logging"
+  - "show vrf"
+  - "show ip interface brief"
+  - "show interfaces"
+  - "show ip route vrf all"
+  - "show clock"
+  - "show ntp status"
+  - "show ntp associations"
+  - "dir all-filesystems"
+  - "show running-config"

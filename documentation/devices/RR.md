@@ -10,6 +10,7 @@
 - [Management Security](#management-security)
   - [Management Security Summary](#management-security-summary)
   - [Management Security Configuration](#management-security-configuration)
+- [Aliases](#aliases)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
 - [Spanning Tree](#spanning-tree)
@@ -145,6 +146,14 @@ username emil privilege 15 role network-admin secret sha512 $6$kiCAKn8fb8T12ClP$
 !
 management security
    password encryption-key common
+```
+
+# Aliases
+
+```eos
+alias meminfo bash cat /proc/meminfo
+alias cpuinfo bash cat /proc/cpuinfo
+!
 ```
 
 # Monitoring
@@ -501,6 +510,10 @@ router bgp 64512
    address-family ipv4
       no neighbor MPLS-OVERLAY-PEERS activate
       no neighbor RR-OVERLAY-PEERS activate
+   !
+   address-family vpn-ipv4
+      neighbor MPLS-OVERLAY-PEERS activate
+      neighbor RR-OVERLAY-PEERS activate
 ```
 
 # BFD
